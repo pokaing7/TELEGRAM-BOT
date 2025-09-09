@@ -1,35 +1,30 @@
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-from urllib.parse import urlparse
 
-# /start command function
+# /start command ka response
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("🔗 Please enter your website link:")
+    await update.message.reply_text("Match start ho gaya! 🏏⚽\nKesa ha kutta? 😂")
 
-# Function to handle user messages
+# Agar koi message bheje jisme "match" ho
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = update.message.text.strip()
-
-    # Parse the URL
-    parsed_url = urlparse(text)
-    if parsed_url.netloc:  # agar domain mila
-        await update.message.reply_text(f"✅ Shortcut: {parsed_url.netloc}")
+    text = update.message.text.lower()
+    if "match" in text:
+        await update.message.reply_text("Match chal raha hai bhai... Kesa ha kutta? 😆")
     else:
-        await update.message.reply_text("❌ Invalid link! Please send a valid website link (e.g., https://example.com)")
+        await update.message.reply_text("Samajh nahi aaya 🤔 'match' likho.")
 
 def main():
-    # ⚠️ Yaha apna BotFather se liya hua TOKEN paste karo
-    TOKEN = "8326515238:AAHYELSxlG7NL9ev9ZGcypumpZtE1OI-cKU"
+    # ⚠️ Apna BotFather se liya hua token yaha daalna
+    TOKEN = "PASTE_YOUR_BOT_TOKEN_HERE"
 
-    # Bot application start
     app = Application.builder().token(TOKEN).build()
 
-    # Command aur message handlers
+    # Command handler (/start)
     app.add_handler(CommandHandler("start", start))
+    # Message handler (normal text)
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-    # Run bot
-    print("🤖 Bot is running... Press CTRL+C to stop.")
+    print("🤖 Bot is running...")
     app.run_polling()
 
 if __name__ == "__main__":
